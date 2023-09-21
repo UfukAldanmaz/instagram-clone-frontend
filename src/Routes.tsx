@@ -10,12 +10,12 @@ import AuthContext from './context/AuthProvider';
 type Props = {}
 
 const ProtectedRoutes = () => {
-    const { auth } = useContext(AuthContext)
-    if (!auth) return <Navigate to='/login' replace />
+    const { isAuthenticated } = useContext(AuthContext)
+    if (!isAuthenticated) return <Navigate to='/login' replace />
     return <Layout />
 }
 
-const Routes = (props: Props) => {
+const Routes = (_props: Props) => {
 
     return (
         <Router>

@@ -1,26 +1,33 @@
 import { ReactNode, createContext, useState } from "react";
+import { User } from "../models/AuthModels";
+import { useAuth } from "../hooks/useAuth";
 
 type Props = {
     children?: ReactNode;
 }
 
 type IAuthContext = {
-    auth: boolean,
-    setAuth: (newState: boolean) => void
+    isAuthenticated: boolean,
+    setIsAuthenticated: (newState: boolean) => void
+    user: User | null;
+    setToken: (token: string) => void
 }
 
 const initialValue = {
-    auth: false,
-    setAuth: () => { }
+    isAuthenticated: false,
+    setIsAuthenticated: () => { },
+    user: null,
+    setToken: () => { },
 }
 
 const AuthContext = createContext<IAuthContext>(initialValue);
 
 export const AuthProvider = ({ children }: Props) => {
-    const [auth, setAuth] = useState(initialValue.auth);
+    const { user, setToken } = useAuth();
+    const [isAuthenticated, setIsAuthenticated] = useState(initialValue.isAuthenticated);
 
     return (
-        <AuthContext.Provider value={{ auth, setAuth }}>
+        <AuthContext.Provider value={{ user, setToken, isAuthenticated, setIsAuthenticated }}>
             {children}
         </AuthContext.Provider>
     )

@@ -3,12 +3,13 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { validationSchema } from './validationSchema';
 import { Link, useNavigate } from 'react-router-dom';
-import { LoginFormValues } from '../models/AuthModels';
+import { AuthResponse, LoginFormValues } from '../models/AuthModels';
 import { login } from '../auth/authService';
 import AuthContext from '../context/AuthProvider';
+import { AxiosResponse } from 'axios';
 
 const Login: React.FC = () => {
-    const { setAuth } = useContext(AuthContext);
+    const { setIsAuthenticated, setToken } = useContext(AuthContext);
     const navigate = useNavigate();
     const { register, handleSubmit, formState } = useForm<LoginFormValues>({
         resolver: yupResolver(validationSchema),
@@ -16,8 +17,9 @@ const Login: React.FC = () => {
 
     const onSubmit = async (data: LoginFormValues) => {
         login(data)
-            .then((_response) => {
-                setAuth(true);
+            .then((_response: AxiosResponse<AuthResponse>) => {
+                setIsAuthenticated(true);
+                setToken(_response.data.access_token);
                 navigate('/');
             })
             .catch((error) => {
