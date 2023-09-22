@@ -9,7 +9,7 @@ export const useAuth = () => {
     useEffect(() => {
         const user = getItem("user");
         if (user) {
-            setItem("user", JSON.parse(user));
+            setItem("user", JSON.stringify(user));
         }
     }, []);
 
