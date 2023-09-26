@@ -1,6 +1,6 @@
 
-import axios from 'axios';
 import React, { useState } from 'react'
+import * as yup from 'yup';
 
 interface PopupProps {
     trigger: boolean;
@@ -11,12 +11,19 @@ export const Popup: React.FC<PopupProps> = ({ trigger, setTrigger }) => {
     const [modalState, setModalState] = useState<'upload' | 'caption'>('upload');
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [caption, setCaption] = useState<string>('');
+    const [error, setError] = useState<string | null>(null);
+
+
+    // const validationSchema = yup.object().shape({
+    //     caption: yup.string().required('Please write a caption for the photo.'),
+    // });
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             setSelectedImage(file);
             setModalState('caption');
+            setError(null)
         }
     };
 
@@ -24,15 +31,26 @@ export const Popup: React.FC<PopupProps> = ({ trigger, setTrigger }) => {
         setModalState('upload');
         setSelectedImage(null);
         setCaption('');
+        setError(null);
         setTrigger(false);
     };
 
     const handleSubmit = async () => {
-        //error message if user doesn't write a comment
+        if (!caption.trim()) {
+            setError('Please write a caption for the photo.');
+            return;
+        }
+
         console.log('Selected Image:', selectedImage);
         console.log('Caption:', caption);
+
         setModalState('upload');
+        setSelectedImage(null);
+        setCaption('');
+        setError(null);
         setTrigger(false);
+
+
     };
 
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -101,6 +119,9 @@ export const Popup: React.FC<PopupProps> = ({ trigger, setTrigger }) => {
                                 onChange={(e) => setCaption(e.target.value)}
                                 className="w-full border rounded-lg px-4 py-2"
                             />
+                            {error && (
+                                <label className="text-red-500">{error}</label>
+                            )}
                             <button
                                 onClick={handleSubmit}
                                 className='bg-blue-500 rounded-lg w-92 h-10 text-center text-white hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm px-5 py-2.5 text-center'
