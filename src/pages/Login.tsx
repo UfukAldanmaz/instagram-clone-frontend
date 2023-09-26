@@ -7,9 +7,11 @@ import { AuthResponse, LoginFormValues } from '../models/AuthModels';
 import { login } from '../auth/authService';
 import AuthContext from '../context/AuthProvider';
 import { AxiosResponse } from 'axios';
+import { toast } from 'react-toastify';
 
 const Login: React.FC = () => {
-    const { setIsAuthenticated, setToken } = useContext(AuthContext);
+    const { setIsAuthenticated, setToken, refreshToken } = useContext(AuthContext);
+
     const navigate = useNavigate();
     const { register, handleSubmit, formState } = useForm<LoginFormValues>({
         resolver: yupResolver(validationSchema),
@@ -18,23 +20,23 @@ const Login: React.FC = () => {
     const onSubmit = async (data: LoginFormValues) => {
         login(data)
             .then((_response: AxiosResponse<AuthResponse>) => {
+                toast.success('Success')
                 setIsAuthenticated(true);
                 setToken(_response.data.access_token);
                 navigate('/');
             })
             .catch((error) => {
                 console.log(error)
-                // TODO: show notification.
+                toast.error('Server error')
+                if (error.response && error.response.status === 401) {
+                    refreshToken();
+                }
+
             })
 
     };
     return (
         <div>
-            {/* <form>
-                <input type='email' placeholder='email' />
-                <input type='password' placeholder='password' />
-                <button>Login</button>
-            </form> */}
             <section className="bg-gray-50 dark:bg-gray-900">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
@@ -73,3 +75,25 @@ const Login: React.FC = () => {
 }
 
 export default Login
+
+
+// if (error._response.statusCode === 500) {
+//     toast.error('Server error', {
+//         position: toast.POSITION.TOP_RIGHT
+//     })
+// }
+// else if (error._response.statusCode === 401) {
+//     toast.error('You are not authorized', {
+//         position: toast.POSITION.TOP_RIGHT
+//     })
+// }
+// else if (error._response.statusCode === 404) {
+//     toast.error('The requested resource was not found', {
+//         position: toast.POSITION.TOP_RIGHT
+//     })
+// }
+// else {
+//     toast.error('An error occurred. Please check your network connection.', {
+//         position: toast.POSITION.TOP_RIGHT
+//     })
+// }

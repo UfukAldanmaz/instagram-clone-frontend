@@ -7,10 +7,12 @@ type Props = {
 }
 
 type IAuthContext = {
-    isAuthenticated: boolean,
-    setIsAuthenticated: (newState: boolean) => void
+    isAuthenticated: boolean;
+    setIsAuthenticated: (newState: boolean) => void;
     user: User | null;
-    setToken: (token: string) => void
+    setToken: (token: string) => void;
+    refreshToken: () => void;
+
 }
 
 const initialValue = {
@@ -18,16 +20,17 @@ const initialValue = {
     setIsAuthenticated: () => { },
     user: null,
     setToken: () => { },
+    refreshToken: () => { },
 }
 
 const AuthContext = createContext<IAuthContext>(initialValue);
 
 export const AuthProvider = ({ children }: Props) => {
-    const { user, setToken } = useAuth();
+    const { user, setToken, refreshToken } = useAuth();
     const [isAuthenticated, setIsAuthenticated] = useState(initialValue.isAuthenticated);
 
     return (
-        <AuthContext.Provider value={{ user, setToken, isAuthenticated, setIsAuthenticated }}>
+        <AuthContext.Provider value={{ user, setToken, isAuthenticated, setIsAuthenticated, refreshToken }}>
             {children}
         </AuthContext.Provider>
     )
