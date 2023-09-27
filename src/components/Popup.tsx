@@ -1,4 +1,8 @@
+import { AxiosResponse } from "axios";
 import React, { useState } from "react";
+import { UploadResponse } from "../models/PostModels";
+import { upload } from "../services/post/postService";
+import { useNavigate } from "react-router-dom";
 
 interface PopupProps {
   trigger: boolean;
@@ -10,10 +14,8 @@ export const Popup: React.FC<PopupProps> = ({ trigger, setTrigger }) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [caption, setCaption] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-
-  // const validationSchema = yup.object().shape({
-  //     caption: yup.string().required('Please write a caption for the photo.'),
-  // });
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -36,6 +38,21 @@ export const Popup: React.FC<PopupProps> = ({ trigger, setTrigger }) => {
     if (!caption.trim()) {
       setError("Please write a caption for the photo.");
       return;
+    }
+    if (!selectedImage) {
+      setError("Please select image");
+      return;
+    }
+    setLoading(true);
+    try {
+      upload({ file: selectedImage as Blob }).then(
+        (_response: AxiosResponse<UploadResponse>) => {
+          navigate("/profile");
+        }
+      );
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      setLoading(false);
     }
 
     console.log("Selected Image:", selectedImage);
@@ -160,7 +177,6 @@ export const Popup: React.FC<PopupProps> = ({ trigger, setTrigger }) => {
             </>
           )}
         </div>
-        {/* <button className='bg-blue-500 rounded-lg w-92 h-10 text-center text-white hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 text-sm px-5 py-2.5 text-center'>Select from computer</button> */}
       </div>
     </div>
   ) : (
