@@ -28,7 +28,7 @@ export const Profile = () => {
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <div className="flex flex-col justify-start gap-2 w-full  ml-0 mt-0 mb-72 mr-72 b-2 bt-gray-800">
+        <div className="flex flex-col ml-32 mb-64 bt-gray-800">
           <div className="flex flex-row justify-center items-center">
             <svg
               color="rgb(0, 0, 0)"
@@ -94,13 +94,13 @@ export const Profile = () => {
                 y2="14.985"
               ></line>
             </svg>
-            <h6>Post</h6>
+            <h6 className="font-sm">Post</h6>
           </div>
-          <ul className="flex flex-row gap-4 border-2 border-gray-200 rounded-lg h-screen p-2">
+          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mt-4">
             {posts.map((post) => (
               <li key={post.id}>
                 <img
-                  className="w-48 rounded-lg"
+                  className="w-48 h-48 rounded-lg"
                   src={post.url}
                   alt={`Post ${post.id}`}
                 />
