@@ -5,8 +5,9 @@ import {
   UploadRequest,
   UploadResponse,
 } from "../../models/PostModels";
+import api from "../api-service-base";
 
-const API_URL = "/api/post";
+const API_URL = "/post";
 
 export const upload = (
   request: UploadRequest
@@ -14,7 +15,7 @@ export const upload = (
   const formData = new FormData();
 
   formData.append("file", request.file);
-  return axios.post(`${API_URL}/upload`, formData, {
+  return api.post(`${API_URL}/upload`, formData, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "multipart/form-data",
@@ -23,7 +24,7 @@ export const upload = (
 };
 
 export const list = (): Promise<AxiosResponse<ListResponse>> => {
-  return axios.get(`${API_URL}`, {
+  return api.get(`${API_URL}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },

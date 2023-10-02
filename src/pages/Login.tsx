@@ -10,8 +10,7 @@ import { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 
 const Login: React.FC = () => {
-  const { setIsAuthenticated, setToken, refreshToken } =
-    useContext(AuthContext);
+  const { setToken } = useContext(AuthContext);
 
   const navigate = useNavigate();
   const { register, handleSubmit, formState } = useForm<LoginFormValues>({
@@ -22,16 +21,12 @@ const Login: React.FC = () => {
     login(data)
       .then((_response: AxiosResponse<AuthResponse>) => {
         toast.success("Success");
-        setIsAuthenticated(true);
         setToken(_response.data.access_token);
         navigate("/");
       })
       .catch((error) => {
         console.log(error);
         toast.error("Server error");
-        if (error.response && error.response.status === 401) {
-          refreshToken();
-        }
       });
   };
   return (

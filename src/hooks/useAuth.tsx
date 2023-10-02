@@ -29,9 +29,9 @@ export const useAuth = () => {
 
   const refreshToken = async () => {
     try {
-      const refreshToken = getItem("/refresh");
+      const refreshToken = getItem("token");
       if (refreshToken) {
-        const response = await axios.post("/api/refresh", {
+        const response = await axios.post("/auth/refresh", {
           refreshToken,
         });
         if (response.status === 200) {
@@ -43,6 +43,7 @@ export const useAuth = () => {
       }
     } catch (error) {
       console.error("Error refreshing access token:", error);
+      throw error;
     }
   };
 
