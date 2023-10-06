@@ -2,11 +2,16 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/instagram-logo.png";
 import React, { useState } from "react";
 import { Popup } from "./Popup";
+import { useAuth } from "../hooks/useAuth";
 
 const Sidebar: React.FC = (props): React.JSX.Element => {
   const navigate = useNavigate();
-
+  const { logout } = useAuth();
   const [popUp, setPopUp] = useState(false);
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <div>
@@ -171,6 +176,21 @@ const Sidebar: React.FC = (props): React.JSX.Element => {
                   <path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z" />
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Profile</span>
+              </a>
+            </li>
+            <li className="absolute bottom-8">
+              <a
+                onClick={handleLogout}
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="1em"
+                  viewBox="0 0 448 512"
+                >
+                  <path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" />
+                </svg>
+                <span className="flex-1 ml-3 whitespace-nowrap">Logout</span>
               </a>
             </li>
           </ul>

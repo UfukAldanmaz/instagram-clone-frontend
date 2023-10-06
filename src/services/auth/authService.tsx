@@ -21,6 +21,10 @@ export const login = (
   return axios.post<AuthResponse>(`${API_URL}/login`, formData);
 };
 
+export const logout = (): Promise<AxiosResponse<any>> => {
+  return axios.post(`${API_URL}/logout`);
+};
+
 export const refreshToken = (): Promise<
   AxiosResponse<RefreshTokenResponse>
 > => {

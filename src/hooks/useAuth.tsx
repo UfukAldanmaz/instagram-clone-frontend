@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "./useLocalStorage";
 import { User } from "../models/AuthModels";
+import { logout } from "../services/auth/authService";
 import axios from "axios";
 
 export const useAuth = () => {
@@ -22,9 +23,23 @@ export const useAuth = () => {
     setUser(user);
   };
 
-  const logout = () => {
-    setItem("user", "");
-    setUser(null);
+  const logoutUser = async () => {
+    try {
+      const response = await logout(); // Call the service function
+      if (response.status === 200) {
+        // Logout was successful
+        // You can perform any necessary client-side cleanup here
+        console.log("Logout successful");
+      } else {
+        // Handle logout failure
+        console.error("Logout failed");
+      }
+
+      setItem("user", "");
+      setUser(null);
+    } catch (error) {
+      // Handle errors if necessary
+    }
   };
 
   const refreshToken = async () => {
@@ -47,5 +62,5 @@ export const useAuth = () => {
     }
   };
 
-  return { user, setToken, logout, refreshToken };
+  return { user, setToken, logout: logoutUser, refreshToken };
 };

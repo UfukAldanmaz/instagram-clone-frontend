@@ -13,11 +13,9 @@ const api = axios.create({
 
 api.interceptors.request.use(
   function (config) {
-    // Do something before request is sent
     return config;
   },
   function (error) {
-    // Do something with request error
     return Promise.reject(error);
   }
 );
@@ -49,7 +47,7 @@ const handleResponseError = async (error: any) => {
   originalRequest._retry = true;
   try {
     await refreshToken();
-    const response = await api(originalRequest); // Retry the original request
+    const response = await api(originalRequest);
     return response;
   } catch (refreshError) {
     if (process.env.NODE_ENV !== "production") {
