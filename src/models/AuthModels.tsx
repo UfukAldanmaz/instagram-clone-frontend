@@ -10,6 +10,7 @@ export interface AuthResponse {
 export interface SignUpFormValues {
   email: string;
   password: string;
+  username: string;
 }
 
 export interface LoginFormValues {

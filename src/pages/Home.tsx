@@ -2,16 +2,29 @@ import heart from "../assets/heart.svg";
 import speach from "../assets/speach-balloon.svg";
 import bookmark from "../assets/bookmark.svg";
 import emoji from "../assets/emoji.svg";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
-import debounce from "lodash/debounce";
+import { timeline } from "../services/post/postService";
+import { Post } from "../models/PostModels";
 
 const Home: React.FC = (): React.JSX.Element => {
   const [openEmojiBox, setOpenEmojiBox] = useState(false);
   const [selectedEmojis, setSelectedEmojis] = useState<string[]>([]);
   const [inputText, setInputText] = useState("");
   const [comments, setComments] = useState<string[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+    // Fetch posts with usernames when the component mounts
+    timeline()
+      .then((response) => {
+        setPosts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching posts", error);
+      });
+  }, []);
 
   const handleEmojiSelect = (emoji: any) => {
     setSelectedEmojis([...selectedEmojis, emoji.native]);
@@ -32,6 +45,13 @@ const Home: React.FC = (): React.JSX.Element => {
   };
   return (
     <div className=" flex items-start flex-col bg-purple-100 p-6 rounded-lg w-96 h-full relative">
+      {posts.map((post) => (
+        <div key={post.id}>
+          {/* <p>{post.content}</p> */}
+          {/* Display the username from the post data */}
+          <p>Username: {post.user[0].username}</p>
+        </div>
+      ))}
       <div className="flex flex-row items-center gap-2">
         <div className="flex -space-x-2 overflow-hidden">
           <img

@@ -30,3 +30,7 @@ export const list = (): Promise<AxiosResponse<ListResponse>> => {
     },
   });
 };
+
+export const timeline = (): Promise<AxiosResponse<ListResponse>> => {
+  return api.get(`${API_URL}/timeline`);
+};

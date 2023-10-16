@@ -7,6 +7,7 @@ import Layout from "./components/Layout";
 import { useContext } from "react";
 import AuthContext from "./context/AuthProvider";
 import { Profile } from "./pages/Profile";
+import UserProfile from "./pages/UserProfile";
 
 type Props = {};
 
@@ -28,6 +29,7 @@ const Routes = (_props: Props) => {
       <Route element={<ProtectedRoutes />}>
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/users/:userId" element={<UserProfile />} />
       </Route>
     </Router>
   );

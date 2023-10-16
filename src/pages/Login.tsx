@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { validationSchema } from "./validationSchema";
+import { loginValidationSchema } from "./validationSchema";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthResponse, LoginFormValues } from "../models/AuthModels";
 import { login } from "../services/auth/authService";
@@ -14,7 +14,7 @@ const Login: React.FC = () => {
 
   const navigate = useNavigate();
   const { register, handleSubmit, formState } = useForm<LoginFormValues>({
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(loginValidationSchema),
   });
 
   const onSubmit = async (data: LoginFormValues) => {
