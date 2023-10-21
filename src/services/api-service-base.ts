@@ -1,8 +1,7 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 // import * as notification from '@/components/notification'
 import { refreshToken } from "../services/auth/authService";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 const baseUrl = "/api";
 
@@ -13,6 +12,9 @@ const api = axios.create({
 
 api.interceptors.request.use(
   function (config) {
+    const token = localStorage.getItem("token");
+    config.headers.Authorization = "Bearer " + token;
+
     return config;
   },
   function (error) {
@@ -20,14 +22,15 @@ api.interceptors.request.use(
   }
 );
 
-const handleResponseError = async (error: any) => {
-  const navigate = useNavigate();
-
+const handleResponseError = (error: any) => {
+  console.log("1");
   if (!error.response) {
     toast.error("Please try again later");
 
     return Promise.reject(error);
   }
+
+  console.log("2");
 
   if (error.response.status !== 401) {
     toast.error("An error occurred");
@@ -35,36 +38,39 @@ const handleResponseError = async (error: any) => {
   }
 
   const originalRequest = error.config;
+  console.log("3");
 
-  if (
-    error.response.headers["token-expired"] != "true" ||
-    originalRequest._retry
-  ) {
-    navigate("/login");
+  if (originalRequest._retry) {
+    // navigate("/login");
+    window.location.href = "/login";
     return Promise.reject(error.response);
   }
 
   originalRequest._retry = true;
-  try {
-    await refreshToken();
-    const response = await api(originalRequest);
-    return response;
-  } catch (refreshError) {
-    if (process.env.NODE_ENV !== "production") {
-      toast.error("An error occurred");
-    }
-    navigate("/login");
-    return Promise.reject(refreshError);
-  }
+
+  console.log("4");
+
+  refreshToken()
+    .then((response) => {
+      localStorage.setItem("token", response.data.access_token);
+      return api(originalRequest);
+    })
+    .catch((error) => {
+      if (process.env.NODE_ENV !== "production") {
+        toast.error("An error occurred");
+      }
+      // navigate("/login");
+      window.location.href = "/login";
+
+      return Promise.reject(error);
+    });
 };
 
 api.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    if (error.response && error.response.status === 401) {
-      await handleResponseError(error);
-    }
-    return Promise.reject(error);
+  (error) => {
+    console.log("slkdjfsdklfjksdfk");
+    handleResponseError(error);
   }
 );
 

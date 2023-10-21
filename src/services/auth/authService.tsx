@@ -6,27 +6,28 @@ import {
   RefreshTokenResponse,
   SignUpFormValues,
 } from "../../models/AuthModels";
+import api from "../api-service-base";
 
-const API_URL = "/api/auth";
+const API_URL = "/auth";
 
 export const signUp = (
   formData: SignUpFormValues
 ): Promise<AxiosResponse<any>> => {
-  return axios.post(`${API_URL}/sign-up`, formData);
+  return api.post(`${API_URL}/sign-up`, formData);
 };
 
 export const login = (
   formData: LoginFormValues
 ): Promise<AxiosResponse<AuthResponse>> => {
-  return axios.post<AuthResponse>(`${API_URL}/login`, formData);
+  return api.post<AuthResponse>(`${API_URL}/login`, formData);
 };
 
 export const logout = (): Promise<AxiosResponse<any>> => {
-  return axios.post(`${API_URL}/logout`);
+  return api.post(`${API_URL}/logout`);
 };
 
 export const refreshToken = (): Promise<
   AxiosResponse<RefreshTokenResponse>
 > => {
-  return axios.post(`${API_URL}/refresh`);
+  return api.post(`${API_URL}/refresh`);
 };

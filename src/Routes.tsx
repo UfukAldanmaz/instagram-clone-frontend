@@ -13,7 +13,7 @@ type Props = {};
 
 const ProtectedRoutes = () => {
   const { isAuthenticated } = useContext(AuthContext);
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (!isAuthenticated()) return <Navigate to="/login" replace />;
   return <Layout />;
 };
 
@@ -29,7 +29,7 @@ const Routes = (_props: Props) => {
       <Route element={<ProtectedRoutes />}>
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/users/:userId" element={<UserProfile />} />
+        <Route path={`/users/:username`} element={<UserProfile />} />
       </Route>
     </Router>
   );

@@ -1,5 +1,12 @@
-import { UserProps } from "./UserProfileModels";
+export interface Following {
+  id: string;
+  username: string;
+  bio: any;
+  profilePictureUrl: any;
+}
 
 export interface FollowingResponse {
-  followedUsers: UserProps[];
+  follower: Following;
+  following: Following;
+  id: number;
 }

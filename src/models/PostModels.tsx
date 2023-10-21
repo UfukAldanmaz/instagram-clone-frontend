@@ -14,5 +14,5 @@ export type ListResponse = Post[];
 export interface Post {
   id: number;
   url: string;
-  user: UserProps[];
+  user: UserProps;
 }

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { AxiosResponse } from "axios";
 import {
   ListResponse,
@@ -17,7 +16,6 @@ export const upload = (
   formData.append("file", request.file);
   return api.post(`${API_URL}/upload`, formData, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "multipart/form-data",
     },
   });
@@ -25,6 +23,18 @@ export const upload = (
 
 export const list = (): Promise<AxiosResponse<ListResponse>> => {
   return api.get(`${API_URL}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+
+export const listUserPost = (
+  username?: string
+): Promise<AxiosResponse<ListResponse>> => {
+  const url = username ? `${API_URL}/${username}` : API_URL;
+
+  return api.get(url, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },

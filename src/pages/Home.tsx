@@ -20,6 +20,11 @@ const Home: React.FC = (): React.JSX.Element => {
     timeline()
       .then((response) => {
         setPosts(response.data);
+        console.log("Posts:", response.data);
+        response.data.forEach((post) => {
+          console.log("Post:", post);
+          // console.log("Username:", post.user[0].username);
+        });
       })
       .catch((error) => {
         console.error("Error fetching posts", error);
@@ -49,10 +54,16 @@ const Home: React.FC = (): React.JSX.Element => {
         <div key={post.id}>
           {/* <p>{post.content}</p> */}
           {/* Display the username from the post data */}
-          <p>Username: {post.user[0].username}</p>
+          <ul>
+            <li> Username: {post.user && post.user.username}</li>
+            <li>
+              {" "}
+              <img src={post.url} alt="image" />
+            </li>
+          </ul>
         </div>
       ))}
-      <div className="flex flex-row items-center gap-2">
+      {/* <div className="flex flex-row items-center gap-2">
         <div className="flex -space-x-2 overflow-hidden">
           <img
             className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
@@ -61,8 +72,8 @@ const Home: React.FC = (): React.JSX.Element => {
           />
         </div>
         <p>username</p> <span>•</span> <span>12h</span>
-      </div>
-      <span className="text-2xl absolute top-0 right-3">...</span>
+      </div> */}
+      {/* <span className="text-2xl absolute top-0 right-3">...</span>
       <img
         className="mt-4"
         src="https://akademidunyasi.com.tr/panel/assets/img/site/yazi/489resim%20kursu%208.jpeg"
@@ -71,8 +82,8 @@ const Home: React.FC = (): React.JSX.Element => {
         <img src={heart} />
         <img src={speach} />
         <img className="absolute right-6" src={bookmark} />
-      </div>
-
+      </div> */}
+      {/* 
       <p className="font-bold text-sm mt-2">5 likes</p>
       <div className="flex flex-row gap-3">
         <p>username</p> <p>Some comments</p>
@@ -83,7 +94,7 @@ const Home: React.FC = (): React.JSX.Element => {
         value={inputText}
         onChange={handleInputChange}
         onKeyDown={handleInputKeyDown}
-      />
+      /> */}
       {/* <div className="emoji-container">
         {selectedEmojis.map((emoji, index) => (
           <span key={index} className="emoji">
@@ -91,7 +102,7 @@ const Home: React.FC = (): React.JSX.Element => {
           </span>
         ))}
       </div> */}
-      <img src={emoji} onClick={() => setOpenEmojiBox(true)} />
+      {/* <img src={emoji} onClick={() => setOpenEmojiBox(true)} />
       {openEmojiBox && <Picker data={data} onEmojiSelect={handleEmojiSelect} />}
       <div>
         {selectedEmojis.map((emoji, index) => (
@@ -102,7 +113,7 @@ const Home: React.FC = (): React.JSX.Element => {
         {comments.map((comment, index) => (
           <div key={index}>{comment}</div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

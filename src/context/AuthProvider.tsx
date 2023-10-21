@@ -9,22 +9,20 @@ type Props = {
 
 type IAuthContext = {
   isAuthenticated: () => boolean;
-  user: User | null;
+  getUser: () => User | null;
   setToken: (token: string) => void;
-  refreshToken: () => void;
 };
 
 const initialValue = {
   isAuthenticated: () => false,
-  user: null,
+  getUser: (): User | null => null,
   setToken: () => {},
-  refreshToken: () => {},
 };
 
 const AuthContext = createContext<IAuthContext>(initialValue);
 
 export const AuthProvider = ({ children }: Props) => {
-  const { user, setToken, refreshToken } = useAuth();
+  const { getUser, setToken } = useAuth();
   const { getItem } = useLocalStorage();
   const isAuthenticated = (): boolean => {
     return getItem("token") != null;
@@ -33,10 +31,9 @@ export const AuthProvider = ({ children }: Props) => {
   return (
     <AuthContext.Provider
       value={{
-        user,
+        getUser,
         setToken,
         isAuthenticated,
-        refreshToken,
       }}
     >
       {children}

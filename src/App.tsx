@@ -8,14 +8,14 @@ import UserProfile from "./pages/UserProfile";
 import { useContext } from "react";
 
 const App: React.FC = () => {
-  const { user } = useContext(AuthContext);
+  const { getUser } = useContext(AuthContext);
 
   return (
     <>
       <BrowserRouter>
         <AuthProvider>
           <Routes />
-          {user && (
+          {getUser() && (
             <UserProfile
             // userId={user.id.toString()}
             // loggedInUserId={user.id.toString()}
