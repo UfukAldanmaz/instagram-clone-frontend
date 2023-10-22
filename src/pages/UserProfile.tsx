@@ -8,13 +8,20 @@ import {
 import { useParams } from "react-router-dom";
 import { ListResponse, Post } from "../models/PostModels";
 import { list, listUserPost } from "../services/post/postService";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const UserProfile: React.FC = () => {
   const { username } = useParams();
   const [user, setUser] = useState<UserProps | null>();
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
+
+  // const {
+  //   value: isFollowing,
+  //   setItem: setIsFollowing,
+  //   getItem,
+  // } = useLocalStorage();
 
   useEffect(() => {
     if (username) {
@@ -37,9 +44,10 @@ const UserProfile: React.FC = () => {
           setLoading(false);
         });
     }
-  }, [username]);
 
-  useEffect(() => {}, []);
+    const isFollowingUser = localStorage.getItem("isFollowingUser");
+    setIsFollowing(isFollowingUser === "true");
+  }, [username]);
 
   const handleFollowClick = () => {
     if (!user) {
@@ -49,6 +57,7 @@ const UserProfile: React.FC = () => {
       unfollowUser(user.id)
         .then((_response) => {
           setIsFollowing(false);
+          localStorage.setItem("isFollowingUser", "false");
         })
         .catch((error) => {
           console.error("Error unfollowing user", error);
@@ -57,6 +66,7 @@ const UserProfile: React.FC = () => {
       followUser(user.id)
         .then((_response) => {
           setIsFollowing(true);
+          localStorage.setItem("isFollowingUser", "true");
         })
         .catch((error) => {
           console.error("Error following user", error);
@@ -70,7 +80,7 @@ const UserProfile: React.FC = () => {
         <div className="flex flex-col items-center justify-center ml-20">
           <div className="flex gap-4 justify-around items-center overflow-hidden">
             <img
-              className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
+              className="inline-block h-36 w-36 rounded-full ring-2 ring-white"
               src={user.profilePictureUrl}
               alt="avatar"
             />

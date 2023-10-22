@@ -71,14 +71,14 @@ export const Profile = () => {
               {avatarSource ? (
                 <img
                   onClick={() => setIsAvatarPopupOpen(true)}
-                  className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
+                  className="inline-block h-36 w-36 rounded-full ring-2 ring-white"
                   src={avatarSource}
                   alt="avatar"
                 />
               ) : (
                 <img
                   onClick={() => setIsAvatarPopupOpen(true)}
-                  className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
+                  className="inline-block h-36 w-36 rounded-full ring-2 ring-white"
                   src={anonymous}
                   alt="avatar"
                 />
