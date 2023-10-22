@@ -7,8 +7,6 @@ import {
 } from "../services/user-profile/userProfileService";
 import UploadAvatarPhoto from "../components/UploadAvatarPhoto";
 import { Popup } from "../components/Popup";
-import anonymous from "../assets/anonym-avatar.jpeg";
-import { useLocalStorage } from "../hooks/useLocalStorage";
 import { UserProps } from "../models/UserProfileModels";
 
 export const Profile = () => {
@@ -18,13 +16,7 @@ export const Profile = () => {
   const [avatarSource, setAvatarSource] = useState<string | undefined>(
     "/images/default-images/anonymous.jpg"
   );
-
   const [isAvatarPopupOpen, setIsAvatarPopupOpen] = useState(false);
-  // const {
-  //   value: avatarSource,
-  //   setItem: setAvatarSource,
-  //   getItem,
-  // } = useLocalStorage();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +29,8 @@ export const Profile = () => {
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoading(false);
+      } finally {
         setLoading(false);
       }
     };
@@ -59,13 +53,6 @@ export const Profile = () => {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   // Load the avatar URL from local storage when the component mounts
-  //   const storedAvatar = getItem("userAvatar");
-  //   if (storedAvatar) {
-  //     setAvatarSource("userAvatar", storedAvatar);
-  //   }
-  // }, []);
   const handleAvatarUpload = async (file: File | null) => {
     if (file) {
       try {
