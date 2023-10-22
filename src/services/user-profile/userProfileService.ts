@@ -1,14 +1,19 @@
 import { AxiosResponse } from "axios";
 import api from "../api-service-base";
 import { UserProps } from "../../models/UserProfileModels";
-import { UploadRequest, UploadResponse } from "../../models/PostModels";
+import { UploadRequest } from "../../models/PostModels";
 const API_URL = "/users";
+
+export const getProfile = (): Promise<AxiosResponse<UserProps>> => {
+  return api.get(`${API_URL}`);
+};
 
 export const getUser = (
   username: string
 ): Promise<AxiosResponse<UserProps>> => {
   return api.get(`${API_URL}/${username}`);
 };
+
 export const upload = (
   request: UploadRequest
 ): Promise<AxiosResponse<UserProps>> => {
