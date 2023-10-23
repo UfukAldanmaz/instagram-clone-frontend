@@ -65,7 +65,7 @@ const Home: React.FC = (): React.JSX.Element => {
             <div className="flex flex-col">
               <p className="font-bold text-left text-sm mt-2">5 likes</p>
               <div className="flex flex-row gap-3">
-                <p>username</p>
+                <li>{post.user ? post.user.username : "Unknown User"}</li>
               </div>
             </div>
             <input
