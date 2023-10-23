@@ -17,9 +17,14 @@ const UploadPhoto: React.FC<UploadPhotoProps> = ({ onUpload }) => {
   };
 
   return (
-    <div>
+    <div className="flex flex-row justify-around items-center">
       <input type="file" accept="image/*" onChange={handleImageChange} />
-      <button onClick={handleUpload}>Upload</button>
+      <button
+        className="border-2 border-gray-300 bg-gray-200 hover:bg-gray-300 hover:text-gray-600"
+        onClick={handleUpload}
+      >
+        Upload
+      </button>
     </div>
   );
 };

@@ -122,8 +122,7 @@ const CreateContent: React.FC<ICreateContentProps> = ({
             />
             <label
               htmlFor="image-upload"
-              className="bg-blue-500 rounded-lg w-92 h-10 text-center text-white hover:bg-blue-600 focus:ring-0 focus:outline-none
-                        focus:ring-blue-300 text-sm px-5 py-2.5 text-center cursor-pointer"
+              className="bg-blue-500 rounded-lg w-92 h-10 text-center text-white hover:bg-blue-600 focus:ring-0 focus:outline-none focus:ring-blue-300 text-sm px-5 py-2.5 text-center cursor-pointer"
             >
               Select from computer
             </label>
