@@ -22,7 +22,7 @@ const Home: React.FC = (): React.JSX.Element => {
   }, []);
 
   return (
-    <div className=" flex items-start flex-col p-6 rounded-lg w-96 h-full ml-64 relative">
+    <div className=" flex items-start flex-col p-6 rounded-lg w-[500px] h-full ml-64 relative">
       {posts.map((post) => (
         <div key={post.id}>
           <ul className="flex flex-col justify-center">
@@ -52,7 +52,7 @@ const Home: React.FC = (): React.JSX.Element => {
             </div>
             <li className="my-4">
               <img
-                className="w-96 rounded-xl"
+                className="w-[500px] rounded-xl"
                 src={post.url}
                 alt="post-image"
               />
@@ -65,7 +65,7 @@ const Home: React.FC = (): React.JSX.Element => {
             <div className="flex flex-col">
               <p className="font-bold text-left text-sm mt-2">5 likes</p>
               <div className="flex flex-row gap-3">
-                <p>username</p> <p>Some comments</p>
+                <p>username</p>
               </div>
             </div>
             <input

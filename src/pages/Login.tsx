@@ -106,24 +106,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-
-// if (error._response.statusCode === 500) {
-//     toast.error('Server error', {
-//         position: toast.POSITION.TOP_RIGHT
-//     })
-// }
-// else if (error._response.statusCode === 401) {
-//     toast.error('You are not authorized', {
-//         position: toast.POSITION.TOP_RIGHT
-//     })
-// }
-// else if (error._response.statusCode === 404) {
-//     toast.error('The requested resource was not found', {
-//         position: toast.POSITION.TOP_RIGHT
-//     })
-// }
-// else {
-//     toast.error('An error occurred. Please check your network connection.', {
-//         position: toast.POSITION.TOP_RIGHT
-//     })
-// }

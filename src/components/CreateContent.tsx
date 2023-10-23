@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-
 import { Popup } from "./Popup";
 import { useNavigate } from "react-router-dom";
 import { AxiosResponse } from "axios";
 import { UploadResponse } from "../models/PostModels";
 import { upload } from "../services/post/postService";
-import uploadPhoto from "../assets/upload-photo.svg";
 
 type ICreateContentProps = {
   trigger: boolean;

@@ -15,7 +15,7 @@ import profile from "../assets/profile.svg";
 import logOut from "../assets/logout.svg";
 import CreateContent from "./CreateContent";
 
-const Sidebar: React.FC = (props): React.JSX.Element => {
+const Sidebar: React.FC = (_props): React.JSX.Element => {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const [popUp, setPopUp] = useState(false);

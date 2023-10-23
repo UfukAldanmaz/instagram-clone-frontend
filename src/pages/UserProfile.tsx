@@ -26,7 +26,6 @@ const UserProfile: React.FC = () => {
           setUser(userData);
           setLoading(false);
           if (userData) {
-            // Now that we have user data, we can check follow status
             getFollowing()
               .then((followResponse) => {
                 console.log("followRes", followResponse);
@@ -61,12 +60,9 @@ const UserProfile: React.FC = () => {
     if (!user) {
       return;
     }
-
-    // Send a request to the server to toggle follow status
     if (isFollowing) {
       unfollowUser(user.id)
         .then((_response) => {
-          // Update the follow status in the local state
           setIsFollowing(false);
         })
         .catch((error) => {
@@ -75,7 +71,6 @@ const UserProfile: React.FC = () => {
     } else {
       followUser(user.id)
         .then((_response) => {
-          // Update the follow status in the local state
           setIsFollowing(true);
         })
         .catch((error) => {

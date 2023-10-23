@@ -20,7 +20,6 @@ const Signup: React.FC = () => {
       })
       .catch((error) => {
         console.log(error);
-        // TODO: show notification.
       });
   };
   return (
