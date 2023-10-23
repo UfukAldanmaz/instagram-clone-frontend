@@ -29,7 +29,7 @@ const Routes = (_props: Props) => {
       <Route element={<ProtectedRoutes />}>
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path={`/users/:username`} element={<UserProfile />} />
+        <Route path="/user/:username" element={<UserProfile />} />
       </Route>
     </Router>
   );

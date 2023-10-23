@@ -1,13 +1,11 @@
 import heart from "../assets/heart.svg";
 import speach from "../assets/speach-balloon.svg";
 import bookmark from "../assets/bookmark.svg";
-import emoji from "../assets/emoji.svg";
-import Picker from "@emoji-mart/react";
-import data from "@emoji-mart/data";
 import { useEffect, useState } from "react";
 import { timeline } from "../services/post/postService";
 import { Post } from "../models/PostModels";
 import anonymous from "../assets/anonym-avatar.jpeg";
+import { Link } from "react-router-dom";
 
 const Home: React.FC = (): React.JSX.Element => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -44,7 +42,12 @@ const Home: React.FC = (): React.JSX.Element => {
                   />
                 )}
               </li>
-              <li>{post.user ? post.user.username : "Unknown User"}</li>
+              <Link
+                className="text-gray-700 hover:text-gray-700"
+                to={`/user/${post.user?.username}`}
+              >
+                <li>{post.user ? post.user.username : "Unknown User"}</li>
+              </Link>
               <span className="text-2xl absolute top-0 right-3">...</span>
             </div>
             <li className="my-4">
