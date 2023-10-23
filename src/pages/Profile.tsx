@@ -15,6 +15,7 @@ import {
 import { FollowingResponse } from "../models/FollowingModels";
 import anonymous from "../assets/anonym-avatar.jpeg";
 import camera from "../assets/camera.svg";
+import CreateContent from "../components/CreateContent";
 
 export const Profile = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -24,6 +25,7 @@ export const Profile = () => {
   const [isAvatarPopupOpen, setIsAvatarPopupOpen] = useState(false);
   const [followingUsers, setFollowingUsers] = useState<FollowingResponse[]>([]);
   const [followers, setFollowers] = useState<FollowingResponse[]>([]);
+  const [popUp, setPopUp] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -145,12 +147,19 @@ export const Profile = () => {
                 })}
               </ul>
             ) : (
-              <div className="flex flex-col items-center">
-                <img src={camera} alt="camera" />
-                <h1>Share Photos</h1>
+              <div className="flex flex-col items-center mt-10 gap-5">
+                <div className="border-2 border-gray-600 flex flex-row justify-around items-center overflow-hidden inline-block h-24 w-24 rounded-full ring-2 ring-white">
+                  <img className="w-12" src={camera} alt="camera" />
+                </div>
+                <h2 className="text-[36px]">Share Photos</h2>
                 <p>
                   When you share photos, they will appear on your profile.
                 </p>{" "}
+                <a className="cursor-pointer" onClick={() => setPopUp(true)}>
+                  <p className="text-blue-500 hover:text-blue-600 font-semibold">
+                    Share your first photo
+                  </p>
+                </a>
               </div>
             )}
           </div>
@@ -163,6 +172,9 @@ export const Profile = () => {
         title="Change Avatar"
       >
         <UploadAvatarPhoto onUpload={handleAvatarUpload} />
+      </Popup>
+      <Popup trigger={popUp} setTrigger={setPopUp}>
+        <CreateContent trigger={popUp} setTrigger={setPopUp} />
       </Popup>
     </>
   );
