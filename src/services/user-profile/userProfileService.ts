@@ -5,7 +5,11 @@ import { UploadRequest } from "../../models/PostModels";
 const API_URL = "/users";
 
 export const getProfile = (): Promise<AxiosResponse<UserProps>> => {
-  return api.get(`${API_URL}`);
+  return api.get(`${API_URL}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
 };
 
 export const getUser = (

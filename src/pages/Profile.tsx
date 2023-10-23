@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ListResponse, Post } from "../models/PostModels";
+import { Post } from "../models/PostModels";
 import { list } from "../services/post/postService";
 import {
   getProfile,
@@ -8,65 +8,78 @@ import {
 import UploadAvatarPhoto from "../components/UploadAvatarPhoto";
 import { Popup } from "../components/Popup";
 import { UserProps } from "../models/UserProfileModels";
+import {
+  getFollower,
+  getFollowing,
+} from "../services/following-service/followingService";
+import { FollowingResponse } from "../models/FollowingModels";
+import anonymous from "../assets/anonym-avatar.jpeg";
+import camera from "../assets/camera.svg";
 
 export const Profile = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<UserProps | null | undefined>(null);
-  const [avatarSource, setAvatarSource] = useState<string | undefined>(
-    "/images/default-images/anonymous.jpg"
-  );
+  const [avatarSource, setAvatarSource] = useState<string | null>(null);
   const [isAvatarPopupOpen, setIsAvatarPopupOpen] = useState(false);
+  const [followingUsers, setFollowingUsers] = useState<FollowingResponse[]>([]);
+  const [followers, setFollowers] = useState<FollowingResponse[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const response = await list();
-        const responseData: ListResponse = response.data;
-        console.log("profile", response.data);
-        setPosts(responseData);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      } finally {
-        setLoading(false);
-      }
-    };
+    setLoading(true);
+    list()
+      .then((response) => {
+        setPosts(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user profile", error);
+      }).finally;
+    {
+      setLoading(false);
+    }
+
     getProfile()
       .then((response) => {
-        console.log("GETUSER", response.data);
+        setUser(response.data);
 
-        const userData = response.data as UserProps;
-        setUser(userData);
-
-        // Update the avatarSource with the profile picture URL from the user's data
-        if (userData.profilePictureUrl) {
-          setAvatarSource(userData.profilePictureUrl);
+        if (response.data.profilePictureUrl) {
+          setAvatarSource(response.data.profilePictureUrl);
         }
       })
       .catch((error) => {
         console.error("Error fetching user profile", error);
       });
 
-    fetchData();
+    getFollowing()
+      .then((response) => {
+        setFollowingUsers(response.data);
+        console.log("FOLLOWING", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching following users:", error);
+      });
+    getFollower()
+      .then((response) => {
+        setFollowers(response.data);
+        console.log("FOLLOWERS", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching following users:", error);
+      });
   }, []);
 
   const handleAvatarUpload = async (file: File | null) => {
     if (file) {
       try {
         const response = await upload({ file });
-        const { profilePictureUrl } = response.data; // Make sure the response data structure matches UserProps
-        console.log("avatar", response.data);
+        const { profilePictureUrl } = response.data;
 
-        // Update the user's profile picture URL
         setAvatarSource(profilePictureUrl);
 
-        setIsAvatarPopupOpen(false); // Close the avatar upload popup
+        setIsAvatarPopupOpen(false);
       } catch (error) {
         console.error("Error uploading image:", error);
-        // Handle the error here if needed
       }
     }
   };
@@ -76,34 +89,71 @@ export const Profile = () => {
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <div className="flex flex-col ml-32 mb-64 bt-gray-800">
-          <div className="flex flex-row items-center gap-2">
-            <div className="flex -space-x-2 overflow-hidden">
-              <img
-                onClick={() => setIsAvatarPopupOpen(true)}
-                className="inline-block h-36 w-36 rounded-full ring-2 ring-white"
-                src={avatarSource}
-                alt="avatar"
-              />
+        <div className="flex flex-col items-center justify-between ml-20 mt-4 ">
+          <div className="flex flex-col justify-around">
+            <div className="flex gap-10 flex-row justify-around items-center overflow-hidden">
+              {avatarSource ? (
+                <img
+                  onClick={() => setIsAvatarPopupOpen(true)}
+                  className="inline-block h-36 w-36 rounded-full ring-2 ring-white"
+                  src={avatarSource}
+                  alt="avatar"
+                />
+              ) : (
+                <img
+                  onClick={() => setIsAvatarPopupOpen(true)}
+                  className="inline-block h-36 w-36 rounded-full ring-2 ring-white"
+                  src={anonymous}
+                  alt="avatar"
+                />
+              )}
+              <span>{user?.username}</span>
+              <button className="bg-gray-200">Edit Profile</button>
             </div>
-            <span>{user?.username}</span> <span>12h</span>
+            <div className="  ml-32">
+              <span className="mr-3"> {followers.length} Followers</span>
+              <span> {followingUsers.length} Followings</span>
+            </div>
           </div>
-          <div className="flex flex-row justify-center items-center">
-            <h6 className="font-sm">Post</h6>
-          </div>
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mt-4">
-            {posts.map((post) => {
-              return (
-                <li key={post.id}>
-                  <img
-                    className="w-48 h-48 rounded-lg"
-                    src={post.url}
-                    alt={`Post ${post.id}`}
-                  />
+          <div className="flex flex-col justify-center items-center mt-10">
+            <div className="mb-4 border-t border-gray-200 dark:border-gray-700">
+              <ul className="flex flex-wrap -mb-px text-sm font-medium text-center gap-4">
+                <li className="mr-2" role="presentation">
+                  <button className="inline-block p-4 ">Posts</button>
                 </li>
-              );
-            })}
-          </ul>
+                <li className="mr-2" role="presentation">
+                  <button className="inline-block p-4 ">Reels</button>
+                </li>
+                <li className="mr-2" role="presentation">
+                  <button className="inline-block p-4 ">Tagged</button>
+                </li>
+              </ul>
+            </div>
+
+            {posts && posts.length > 0 ? (
+              <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                {posts.map((post) => {
+                  return (
+                    <li key={post.id}>
+                      <img
+                        className="w-48 h-48 rounded-lg"
+                        src={post.url}
+                        alt={`Post ${post.id}`}
+                      />
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <div className="flex flex-col items-center">
+                <img src={camera} alt="camera" />
+                <h1>Share Photos</h1>
+                <p>
+                  When you share photos, they will appear on your profile.
+                </p>{" "}
+              </div>
+            )}
+          </div>
         </div>
       )}
 

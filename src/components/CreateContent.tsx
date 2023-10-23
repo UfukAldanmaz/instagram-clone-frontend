@@ -54,10 +54,6 @@ const CreateContent: React.FC<ICreateContentProps> = ({
       console.error("Error uploading image:", error);
       setLoading(false);
     }
-
-    console.log("Selected Image:", selectedImage);
-    console.log("Caption:", caption);
-
     setModalState("upload");
     setSelectedImage(null);
     setCaption("");

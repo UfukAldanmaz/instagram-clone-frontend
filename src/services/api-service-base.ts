@@ -23,14 +23,11 @@ api.interceptors.request.use(
 );
 
 const handleResponseError = (error: any) => {
-  console.log("1");
   if (!error.response) {
     toast.error("Please try again later");
 
     return Promise.reject(error);
   }
-
-  console.log("2");
 
   if (error.response.status !== 401) {
     toast.error("An error occurred");
@@ -38,7 +35,6 @@ const handleResponseError = (error: any) => {
   }
 
   const originalRequest = error.config;
-  console.log("3");
 
   if (originalRequest._retry) {
     // navigate("/login");
@@ -47,8 +43,6 @@ const handleResponseError = (error: any) => {
   }
 
   originalRequest._retry = true;
-
-  console.log("4");
 
   refreshToken()
     .then((response) => {
@@ -69,7 +63,6 @@ const handleResponseError = (error: any) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log("slkdjfsdklfjksdfk");
     handleResponseError(error);
   }
 );

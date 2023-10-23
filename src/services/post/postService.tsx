@@ -32,7 +32,7 @@ export const list = (): Promise<AxiosResponse<ListResponse>> => {
 export const listUserPost = (
   username?: string
 ): Promise<AxiosResponse<ListResponse>> => {
-  const url = username ? `${API_URL}/${username}` : API_URL;
+  const url = username ? `${API_URL}/user/${username}` : API_URL;
 
   return api.get(url, {
     headers: {

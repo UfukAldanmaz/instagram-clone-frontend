@@ -15,3 +15,11 @@ export const unfollowUser = (
 ): Promise<AxiosResponse<FollowingResponse>> => {
   return api.delete(`${API_URL}/${followingId}`);
 };
+
+export const getFollowing = (): Promise<AxiosResponse<FollowingResponse[]>> => {
+  return api.get(`${API_URL}`);
+};
+
+export const getFollower = (): Promise<AxiosResponse<FollowingResponse[]>> => {
+  return api.get(`${API_URL}/followers`);
+};
