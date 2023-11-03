@@ -56,7 +56,6 @@ export const Profile = () => {
     getFollowing()
       .then((response) => {
         setFollowingUsers(response.data);
-        console.log("FOLLOWING", response.data);
       })
       .catch((error) => {
         console.error("Error fetching following users:", error);
@@ -64,7 +63,6 @@ export const Profile = () => {
     getFollower()
       .then((response) => {
         setFollowers(response.data);
-        console.log("FOLLOWERS", response.data);
       })
       .catch((error) => {
         console.error("Error fetching following users:", error);

@@ -48,7 +48,7 @@ export const Popup: React.FC<ModalProps> = ({
     >
       <div
         ref={modalRef}
-        className="relative h-auto items-center p-8 w-2/5 h-1/2 bg-white rounded-lg"
+        className="relative w-[450px] h-auto items-center p-8 w-2/5 h-1/2 bg-white rounded-lg"
       >
         <div className="p-4 border-b rounded-t text-center items-center dark:border-gray-600">
           {title}

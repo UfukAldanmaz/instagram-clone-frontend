@@ -15,12 +15,7 @@ const App: React.FC = () => {
       <BrowserRouter>
         <AuthProvider>
           <Routes />
-          {getUser() && (
-            <UserProfile
-            // userId={user.id.toString()}
-            // loggedInUserId={user.id.toString()}
-            />
-          )}
+          {getUser() && <UserProfile />}
         </AuthProvider>
       </BrowserRouter>
       <ToastContainer />

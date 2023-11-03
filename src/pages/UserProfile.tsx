@@ -28,11 +28,9 @@ const UserProfile: React.FC = () => {
           if (userData) {
             getFollowing()
               .then((followResponse) => {
-                console.log("followRes", followResponse);
                 const userIsFollowed = followResponse.data.find(
                   (followingUser) => followingUser.following.id == userData.id
                 );
-                console.log("userIS", userIsFollowed);
 
                 setIsFollowing(userIsFollowed != null);
               })
