@@ -35,7 +35,6 @@ export const Profile = () => {
     list()
       .then((response) => {
         setPosts(response.data);
-        console.log("POSTRESPONSE", response.data);
       })
       .catch((error) => {
         console.error("Error fetching user profile", error);
