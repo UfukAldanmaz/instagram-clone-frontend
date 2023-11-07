@@ -15,14 +15,27 @@ import {
 } from "../services/like/likeService";
 import LikedBy from "../components/LikedBy";
 import { useAuth } from "../hooks/useAuth";
+import { User } from "../models/AuthModels";
+import { getProfile } from "../services/user-profile/userProfileService";
+import { UserProps } from "../models/UserProfileModels";
 
 const Home: React.FC = (): React.JSX.Element => {
   const [posts, setPosts] = useState<Post[]>([]);
   // const [likedStates, setLikedStates] = useState<boolean[]>([]);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [currentUser, setCurrentUser] = useState<UserProps | null>(null);
 
   const [trigger, setTrigger] = useState<boolean>(false);
   const { getUser } = useAuth();
+  useEffect(() => {
+    getProfile()
+      .then((response) => {
+        setCurrentUser(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user profile", error);
+      });
+  }, []);
 
   const fetchTimeline = async () => {
     try {
@@ -61,13 +74,11 @@ const Home: React.FC = (): React.JSX.Element => {
         await unlikePhoto(photoId);
         updatedPosts[index].hasLiked = false;
         updatedPosts[index].likes.length -= 1;
-        // Set selectedPost to null when unliking
         setSelectedPost(null);
       } else {
         await likePhoto(photoId);
         updatedPosts[index].hasLiked = true;
         updatedPosts[index].likes.length += 1;
-        // Set selectedPost to the current post when liking
         setSelectedPost(updatedPosts[index]);
       }
 
@@ -101,12 +112,22 @@ const Home: React.FC = (): React.JSX.Element => {
                   />
                 )}
               </li>
-              <Link
-                className="text-gray-700 hover:text-gray-700"
-                to={`/user/${post.user?.username}`}
-              >
-                <li>{post.user ? post.user.username : "Unknown User"}</li>
-              </Link>
+              {currentUser ? (
+                <Link
+                  className="text-gray-700 hover:text-gray-700"
+                  to={
+                    currentUser && post.user?.username === currentUser.username
+                      ? "/profile"
+                      : `/user/${post.user?.username || ""}`
+                  }
+                >
+                  {post.user ? post.user.username : "Unknown User"}
+                </Link>
+              ) : (
+                <Link to={`/user/${post.user?.username}`}>
+                  {post.user ? post.user.username : "Unknown User"}
+                </Link>
+              )}
               <span className="text-2xl absolute top-0 right-3">...</span>
             </div>
             <li className="my-4">
