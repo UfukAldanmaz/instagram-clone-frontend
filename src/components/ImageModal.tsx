@@ -47,7 +47,7 @@ export const ImageModal: React.FC<ImageModalProps> = ({
               />
             ) : (
               <img
-                className="inline-block h-36 w-36 rounded-full ring-2 ring-white"
+                className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
                 src={anonymous}
                 alt="avatar"
               />
