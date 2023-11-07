@@ -74,7 +74,7 @@ const CreateContent: React.FC<ICreateContentProps> = ({
 
   return (
     <Popup
-      className="classname"
+      className="h-auto"
       trigger={trigger}
       setTrigger={() => setTrigger(false)}
       closeOnClickOutside={true}
