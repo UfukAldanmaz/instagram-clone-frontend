@@ -63,7 +63,7 @@ export const Popup: React.FC<ModalProps> = ({
             <span className="sr-only">Close modal</span>
           </button>
         </div>
-        <div className="mt-4">{children}</div>
+        <div className="mt-8">{children}</div>
       </div>
     </div>
   ) : (
