@@ -7,6 +7,7 @@ interface ModalProps {
   children?: ReactNode;
   title?: ReactNode;
   closeOnClickOutside?: boolean;
+  className?: string;
 }
 
 export const Popup: React.FC<ModalProps> = ({
@@ -15,8 +16,10 @@ export const Popup: React.FC<ModalProps> = ({
   setTrigger,
   closeOnClickOutside,
   children,
+  className,
 }) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
+  const combinedClasses = `relative w-[450px] items-center p-8 w-2/5 h-1/2 bg-white rounded-lg ${className}`;
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -42,16 +45,12 @@ export const Popup: React.FC<ModalProps> = ({
 
   return trigger ? (
     <div
-      className={`fixed top-0 left-0 w-full h-screen bg-black bg-opacity-80 inset-0 flex items-center justify-center ${
+      className={`fixed top-0 left-0 w-full h-screen bg-black bg-opacity-40 inset-0 flex items-center justify-center ${
         trigger ? "z-50" : "hidden"
       }`}
     >
-      <div
-        ref={modalRef}
-        className="relative w-[450px] h-auto items-center p-8 w-2/5 h-1/2 bg-white rounded-lg"
-      >
-        <div className="p-4 border-b rounded-t text-center items-center dark:border-gray-600">
-          {title}
+      <div ref={modalRef} className={` ${combinedClasses}`}>
+        <div>
           <button
             onClick={() => {
               setTrigger(false);

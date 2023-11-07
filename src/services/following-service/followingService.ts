@@ -23,3 +23,15 @@ export const getFollowing = (): Promise<AxiosResponse<FollowingResponse[]>> => {
 export const getFollower = (): Promise<AxiosResponse<FollowingResponse[]>> => {
   return api.get(`${API_URL}/followers`);
 };
+
+export const getFollowingsByUsername = (
+  username: string
+): Promise<AxiosResponse<FollowingResponse[]>> => {
+  return api.get(`${API_URL}/${username}/following`);
+};
+
+export const getFollowersByUsername = (
+  username: string
+): Promise<AxiosResponse<FollowingResponse[]>> => {
+  return api.get(`${API_URL}/${username}/followers`);
+};

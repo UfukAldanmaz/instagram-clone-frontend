@@ -16,6 +16,7 @@ import { FollowingResponse } from "../models/FollowingModels";
 import anonymous from "../assets/anonym-avatar.jpeg";
 import camera from "../assets/camera.svg";
 import CreateContent from "../components/CreateContent";
+import { ImageModal } from "../components/ImageModal";
 
 export const Profile = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -26,13 +27,15 @@ export const Profile = () => {
   const [followingUsers, setFollowingUsers] = useState<FollowingResponse[]>([]);
   const [followers, setFollowers] = useState<FollowingResponse[]>([]);
   const [popUp, setPopUp] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<Post | null>(null);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     list()
       .then((response) => {
         setPosts(response.data);
-        console.log(response.data);
+        console.log("POSTRESPONSE", response.data);
       })
       .catch((error) => {
         console.error("Error fetching user profile", error);
@@ -133,13 +136,30 @@ export const Profile = () => {
             {posts && posts.length > 0 ? (
               <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                 {posts.map((post) => {
+                  console.log("POST", post);
+
                   return (
                     <li key={post.id}>
                       <img
+                        onClick={() => {
+                          setSelectedImage(post);
+                          setIsImageModalOpen(true);
+                        }}
                         className="w-48 h-48 rounded-lg"
                         src={post.url}
                         alt={`Post ${post.id}`}
                       />
+                      <Popup
+                        trigger={isImageModalOpen}
+                        setTrigger={setIsImageModalOpen}
+                      >
+                        <ImageModal
+                          post={selectedImage}
+                          isOpen={isImageModalOpen}
+                          onClose={() => setIsImageModalOpen(false)}
+                          className="title"
+                        />
+                      </Popup>
                     </li>
                   );
                 })}
@@ -168,10 +188,11 @@ export const Profile = () => {
         trigger={isAvatarPopupOpen}
         setTrigger={setIsAvatarPopupOpen}
         title="Change Avatar"
+        className="h-24 pb-28 pt-14"
       >
         <UploadAvatarPhoto onUpload={handleAvatarUpload} />
       </Popup>
-      <Popup trigger={popUp} setTrigger={setPopUp}>
+      <Popup className="classname" trigger={popUp} setTrigger={setPopUp}>
         <CreateContent trigger={popUp} setTrigger={setPopUp} />
       </Popup>
     </>

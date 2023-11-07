@@ -74,13 +74,15 @@ const CreateContent: React.FC<ICreateContentProps> = ({
 
   return (
     <Popup
+      className="classname"
       trigger={trigger}
       setTrigger={() => setTrigger(false)}
       closeOnClickOutside={true}
-      title={
-        <h1 className="text-center text-2xl font-bold">Create New Post</h1>
-      }
+      // title={
+      // }
     >
+      <h1 className="text-center text-2xl font-bold">Create New Post</h1>
+
       <div
         className="p-6 space-y-6 flex flex-col justify-between items-center"
         onDragOver={handleDragOver}

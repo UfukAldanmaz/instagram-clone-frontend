@@ -3,13 +3,16 @@ import { getUser } from "../services/user-profile/userProfileService";
 import { UserProps } from "../models/UserProfileModels";
 import {
   followUser,
+  getFollowersByUsername,
   getFollowing,
+  getFollowingsByUsername,
   unfollowUser,
 } from "../services/following-service/followingService";
 import { useParams } from "react-router-dom";
 import { ListResponse, Post } from "../models/PostModels";
 import { listUserPost } from "../services/post/postService";
 import anonymous from "../assets/anonym-avatar.jpeg";
+import { FollowingResponse } from "../models/FollowingModels";
 
 const UserProfile: React.FC = () => {
   const { username } = useParams();
@@ -17,6 +20,13 @@ const UserProfile: React.FC = () => {
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
+  const [followData, setFollowData] = useState<{
+    followings: FollowingResponse[];
+    followers: FollowingResponse[];
+  }>({
+    followings: [],
+    followers: [],
+  });
 
   useEffect(() => {
     if (username) {
@@ -53,6 +63,26 @@ const UserProfile: React.FC = () => {
         });
     }
   }, [username]);
+  // useEffect(() => {
+  //   if (username) {
+  //     // Fetch followings and followers for the specific user
+  //     Promise.all([
+  //       getFollowingsByUsername(username),
+  //       getFollowersByUsername(username),
+  //     ])
+  //       .then(([followingResponse, followersResponse]) => {
+  //         console.log("following", followingResponse.data);
+
+  //         setFollowData({
+  //           followings: followingResponse.data,
+  //           followers: followersResponse.data,
+  //         });
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error fetching followings and followers", error);
+  //       });
+  //   }
+  // }, [username]);
 
   const handleFollowClick = () => {
     if (!user) {
@@ -105,6 +135,12 @@ const UserProfile: React.FC = () => {
               >
                 {isFollowing ? "Unfollow" : "Follow"}
               </button>
+              {/* {followData && (
+                <div>
+                  <h3>Followings: {followData.followings.length}</h3>
+                  <h3>Followers: {followData.followers.length}</h3>
+                </div>
+              )} */}
             </div>
             <div className="flex flex-col justify-center items-center mt-10">
               <div className="mb-4 border-t border-gray-200 dark:border-gray-700">

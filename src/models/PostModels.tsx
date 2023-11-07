@@ -15,6 +15,7 @@ export interface Post {
   id: number;
   url: string;
   user: User;
+  username: string;
   likes: LikedByUser[];
   hasLiked: boolean;
 }
