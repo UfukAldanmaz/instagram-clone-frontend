@@ -16,7 +16,11 @@ const LikedBy: React.FC<LikedByProps> = ({
   setTrigger,
 }) => {
   return (
-    <Popup trigger={trigger} setTrigger={() => setTrigger(false)}>
+    <Popup
+      className="h-auto"
+      trigger={trigger}
+      setTrigger={() => setTrigger(false)}
+    >
       <div className="flex flex-col gap-6">
         {likedUsers &&
           likedUsers.map((item) => (
