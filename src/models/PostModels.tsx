@@ -16,6 +16,7 @@ export interface Post {
   url: string;
   user: User;
   username: string;
+  profilePictureUrl: string;
   likes: LikedByUser[];
   hasLiked: boolean;
 }
